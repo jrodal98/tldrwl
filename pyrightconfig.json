@@ -1,0 +1,21 @@
+{
+  "includes": ["**/*.py"],
+  "excludes": ["**/venv/**", "**/node_modules/**"],
+  "strict": true,
+  "reportMissingImports": true,
+  "reportMissingTypeStubs": true,
+  "venvPath": "./venv",
+  "pythonVersion": "3.10",
+  "typeCheckingMode": "strict",
+  "diagnosticSeverityOverrides": {
+    "reportMissingTypeStubs": "warning"
+  },
+  "executionEnvironments": [
+    {
+      "root": "./tldrwl",
+      "venv": "./venv",
+      "python": "python",
+      "extraPaths": ["./libs"]
+    }
+  ]
+}
