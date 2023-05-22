@@ -7,5 +7,7 @@ build:
 	python3 setup.py sdist bdist_wheel
 upload:
 	# this uploads the packages to pypi
-	rm -rf dist
 	twine upload dist/* 
+clean:
+	rm -rf dist build
+

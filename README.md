@@ -22,11 +22,28 @@ pip install tldrwl
 #!/usr/bin/env python3
 # my_script.py
 
+import asyncio
 from tldrwl.summarize_text import TextSummarizer
 
-text = "<my text to summarize here>"
-summary = TextSummarizer().summarize_text(text)
-print(summary.final_summary)
+def main_sync() -> None:
+    summary = TextSummarizer().summarize_text(text)
+
+    print(summary)
+    print(summary.estimated_cost_usd)
+
+async def main_async() -> None:
+    summary = await TextSummarizer().summarize_text_async(text)
+
+    print(summary)
+    print(summary.estimated_cost_usd)
+
+
+async def main() -> None:
+    await main_async()
+    main_sync()
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 ```bash
