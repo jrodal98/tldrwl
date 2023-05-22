@@ -12,6 +12,8 @@ from typing import List, Dict, Any
 
 from .ai_interface import AiInterface, Model, Summary
 
+MAX_TOKEN_RESPONSE = 1500
+
 
 class TextSummarizer(AiInterface):
     def __init__(
@@ -19,8 +21,8 @@ class TextSummarizer(AiInterface):
         *,
         model: Model = Model.GPT35TURBO,
         prompt_string: str = "Write a detailed summary of the following:\n\n{}\n",
-        chunk_size: int = 8000,
-        max_num_chunks: int = 15,
+        chunk_size: int = 12000,
+        max_num_chunks: int = 10,
     ) -> None:
         super().__init__()
         self._model = model
@@ -102,8 +104,11 @@ class TextSummarizer(AiInterface):
             return summaries[0]
         else:
             final_input = " ".join(s.text for s in summaries)
+            # TODO: recursively summarize if it is still too big instead
+            # of hoping that this will work - maybe catch this exception?
+            # noqa openai.error.InvalidRequestError: This model's maximum context length is 4097 tokens. However, you requested 4612 tokens (3112 in the messages, 1500 in the completion). Please reduce the length of the messages or completion.
             final_summary = await self._summarize_chunk_async(
-                final_input, max_tokens=1500
+                final_input, max_tokens=MAX_TOKEN_RESPONSE
             )
             return Summary(
                 text=final_summary.text,
@@ -122,7 +127,9 @@ class TextSummarizer(AiInterface):
             return summaries[0]
         else:
             final_input = " ".join(s.text for s in summaries)
-            final_summary = self._summarize_chunk(final_input, max_tokens=1500)
+            final_summary = self._summarize_chunk(
+                final_input, max_tokens=MAX_TOKEN_RESPONSE
+            )
             return Summary(
                 text=final_summary.text,
                 num_tokens=final_summary.num_tokens
