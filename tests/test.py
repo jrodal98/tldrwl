@@ -2,6 +2,9 @@
 # www.jrodal.com
 
 from tldrwl.summarize_text import TextSummarizer
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 text = """How to Deploy a Rocket Rust Web Application on VPS
 August 15, 2020
@@ -302,3 +305,4 @@ ChallengeResponseAuthentication no"""
 summary = TextSummarizer().summarize_text(text)
 
 print(summary)
+print(summary.estimated_cost_usd)
