@@ -27,5 +27,5 @@ class TldrwlRegisterException(TldrwlException):
         return cls(
             msg=f"Failed to register {field}",
             cause=f"Environment variable {env_var} is not set.",
-            remediation="Set {env_var} before running script.",
+            remediation=f"Set {env_var} before running script.",
         )

@@ -47,6 +47,10 @@ class TextSummarizer(AiInterface):
         chunks = textwrap.wrap(text, chunk_size)
 
         summaries = [self._summarize_chunk(chunk) for chunk in chunks]
-        final_summary = self._summarize_chunk(" ".join(summaries), max_tokens=2056)
+        final_summary = (
+            self._summarize_chunk(" ".join(summaries), max_tokens=2056)
+            if len(summaries) > 1
+            else summaries[0]
+        )
 
         return TextSummary(final_summary=final_summary, chunk_summaries=summaries)
