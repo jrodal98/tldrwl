@@ -33,11 +33,11 @@ async def main() -> None:
     end = time.time()
     print(f"Finished async in {end - start}s")
 
-    # start = time.time()
-    # print("Running sync")
-    # main_sync()
-    # end = time.time()
-    # print(f"Finished sync in {end - start}s")
+    start = time.time()
+    print("Running sync")
+    main_sync()
+    end = time.time()
+    print(f"Finished sync in {end - start}s")
 
 
 if __name__ == "__main__":

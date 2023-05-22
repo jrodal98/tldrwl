@@ -46,6 +46,3 @@ class YoutubeSummarizer(AiInterface):
     def summarize_video(self, url: str) -> TextSummary:
         transcript = self._get_video_transcript(url)
         return self._text_summarizer.summarize_text(transcript)
-
-
-# text = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
