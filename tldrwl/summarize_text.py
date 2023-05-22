@@ -2,6 +2,7 @@
 # www.jrodal.com
 
 import asyncio
+import time
 from dataclasses import dataclass
 from enum import Enum
 import logging
@@ -66,23 +67,42 @@ class TextSummarizer(AiInterface):
     async def _summarize_chunk_async(self, chunk: str, max_tokens: int) -> TextSummary:
         prompt = self._prompt_string.format(chunk)
 
-        response = await openai.ChatCompletion.acreate(  # type: ignore
-            model=self._model.value,
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=max_tokens,
-        )
+        for _ in range(0, 3):
+            try:
+                response = await openai.ChatCompletion.acreate(  # type: ignore
+                    model=self._model.value,
+                    messages=[{"role": "user", "content": prompt}],
+                    max_tokens=max_tokens,
+                )
+                return self._response_to_text_summary(response)  # type: ignore
+            except openai.error.RateLimitError:  # pyright: ignore
+                retry_interval = 3
+                self._logger.debug(
+                    f"Rate limited by openai - resting for {retry_interval}s"
+                )
+                await asyncio.sleep(retry_interval)
 
-        return self._response_to_text_summary(response)  # type: ignore
+        return TextSummary(summary="", num_tokens=0, model=self._model)
 
     def _summarize_chunk(self, chunk: str, max_tokens: int) -> TextSummary:
         prompt = self._prompt_string.format(chunk)
 
-        response = openai.ChatCompletion.create(  # type: ignore
-            model=self._model.value,
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=max_tokens,
-        )
-        return self._response_to_text_summary(response)  # type: ignore
+        for _ in range(0, 3):
+            try:
+                response = openai.ChatCompletion.create(  # type: ignore
+                    model=self._model.value,
+                    messages=[{"role": "user", "content": prompt}],
+                    max_tokens=max_tokens,
+                )
+                return self._response_to_text_summary(response)  # type: ignore
+            except openai.error.RateLimitError:  # pyright: ignore
+                retry_interval = 3
+                self._logger.debug(
+                    f"Rate limited by openai - resting for {retry_interval}s"
+                )
+                time.sleep(retry_interval)
+
+        return TextSummary(summary="", num_tokens=0, model=self._model)
 
     def _get_chunks(self, text: str) -> List[str]:
         text_length = len(text)

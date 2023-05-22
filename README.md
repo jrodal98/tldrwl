@@ -25,6 +25,8 @@ pip install tldrwl
 import asyncio
 from tldrwl.summarize_text import TextSummarizer
 
+text = "<my really long text>"
+
 def main_sync() -> None:
     summary = TextSummarizer().summarize_text(text)
 
