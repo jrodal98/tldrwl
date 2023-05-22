@@ -5,6 +5,8 @@
 - [x] Summarize text with a single API call
 - [ ] Summarize video with a single API call
 - [ ] Summarize audio with a single API call
+- [x] Sync APIs
+- [ ] Async APIs
 
 ## Install
 
