@@ -93,7 +93,7 @@ class TextSummarizer(AiInterface):
 
         return chunks
 
-    async def summarize_async(self, text: str) -> Summary:
+    async def _summarize_async(self, text: str) -> Summary:
         chunks = self._get_chunks(text)
         summaries = await asyncio.gather(
             *[self._summarize_chunk_async(chunk, max_tokens=250) for chunk in chunks]
@@ -117,7 +117,7 @@ class TextSummarizer(AiInterface):
                 model=self._model,
             )
 
-    def summarize_sync(self, text: str) -> Summary:
+    def _summarize_sync(self, text: str) -> Summary:
         chunks = self._get_chunks(text)
 
         summaries = [self._summarize_chunk(chunk, max_tokens=250) for chunk in chunks]

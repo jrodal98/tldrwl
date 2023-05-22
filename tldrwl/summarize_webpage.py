@@ -51,10 +51,10 @@ class WebpageSummarizer(AiInterface):
                 self._logger.debug(f"Done getting page text for {url}")
                 return page_text
 
-    async def summarize_async(self, text: str) -> Summary:
+    async def _summarize_async(self, text: str) -> Summary:
         page_text = await self._get_page_text_async(text)
         return await self._text_summarizer.summarize_async(page_text)
 
-    def summarize_sync(self, text: str) -> Summary:
+    def _summarize_sync(self, text: str) -> Summary:
         page_text = self._get_page_text(text)
         return self._text_summarizer.summarize_sync(page_text)

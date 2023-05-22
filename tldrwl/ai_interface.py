@@ -3,6 +3,8 @@
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+
+from .exception import TldrwlException
 from .register import Register
 from enum import Enum
 
@@ -35,9 +37,25 @@ class AiInterface(ABC):
             Register.register()
 
     @abstractmethod
-    def summarize_sync(self, text: str) -> Summary:
+    def _summarize_sync(self, text: str) -> Summary:
         pass
 
     @abstractmethod
-    async def summarize_async(self, text: str) -> Summary:
+    async def _summarize_async(self, text: str) -> Summary:
         pass
+
+    def summarize_sync(self, text: str) -> Summary:
+        try:
+            return self._summarize_sync(text)
+        except TldrwlException:
+            raise
+        except Exception as e:
+            raise TldrwlException(msg=str(e), cause="n/a", remediation="n/a") from e
+
+    async def summarize_async(self, text: str) -> Summary:
+        try:
+            return await self._summarize_async(text)
+        except TldrwlException:
+            raise
+        except Exception as e:
+            raise TldrwlException(msg=str(e), cause="n/a", remediation="n/a") from e

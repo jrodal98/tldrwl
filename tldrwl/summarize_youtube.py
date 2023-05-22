@@ -39,10 +39,10 @@ class YoutubeSummarizer(AiInterface):
         self._logger.debug(f"Done getting transcript for {video_id}")
         return TextFormatter().format_transcript(transcript)  # type: ignore
 
-    async def summarize_async(self, text: str) -> Summary:
+    async def _summarize_async(self, text: str) -> Summary:
         transcript = self._get_video_transcript(text)
         return await self._text_summarizer.summarize_async(transcript)
 
-    def summarize_sync(self, text: str) -> Summary:
+    def _summarize_sync(self, text: str) -> Summary:
         transcript = self._get_video_transcript(text)
         return self._text_summarizer.summarize_sync(transcript)

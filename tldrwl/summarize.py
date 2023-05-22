@@ -25,10 +25,10 @@ class Summarizer(AiInterface):
             self._logger.debug("Using TextSummarizer")
             return TextSummarizer()
 
-    async def summarize_async(self, text: str) -> Summary:
+    async def _summarize_async(self, text: str) -> Summary:
         summarizer = self.get_summarizer(text)
         return await summarizer.summarize_async(text)
 
-    def summarize_sync(self, text: str) -> Summary:
+    def _summarize_sync(self, text: str) -> Summary:
         summarizer = self.get_summarizer(text)
         return summarizer.summarize_sync(text)
