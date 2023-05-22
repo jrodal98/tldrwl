@@ -11,6 +11,15 @@ pip install tldrwl
 Summarize webpages, Youtube videos, and texts with a single api call:
 
 ```
+from tldrwl.summarize import Summarizer
+Summarizer().summarize_sync("<webpage url | youtube url | text>")
+await Summarizer().summarize_async("<webpage url | youtube url | text>")
+
+```
+
+Example:
+
+```
 >>> from tldrwl.summarize import Summarizer
 >>> summary = Summarizer().summarize_sync("https://www.youtube.com/watch?v=--khbXchTeE")
 >>> print(summary)
@@ -26,7 +35,7 @@ summary.estimated_cost_usd=0.0015860000000000002
 - [x] Summarize Youtube videos with a single API call
 - [x] Report number of tokens + cost per request
 - [x] Sync APIs
-- [x] Async APIs
+- [x] Async APIs - **much faster than the sync api!**
 - [ ] Summarize audio with a single API call
 
 ## Caveats
@@ -34,7 +43,8 @@ summary.estimated_cost_usd=0.0015860000000000002
 - Requires an OpenAI API key
   - Export to env: `export OPENAI_API_KEY="<your api key here>"`
 - Slow
-  - Small articles take ~20 seconds, longer articles and videos take minutes. There is probably some optimization to be had.
+  - Small articles take ~20 seconds, longer articles and videos take a few minutes. **Prefer the async API, as that is much faster**. There is probably some more optimization to be had.
+  - Can be expensive - by default, this uses the turbo model, which costs $0.002 / 1000 tokens. In the future, I may make the model customizable to allow for cheaper models.
 
 ## General Approach
 
