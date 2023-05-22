@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 # www.jrodal.com
 
+import asyncio
+import time
 from tldrwl.summarize_text import TextSummarizer
-import logging
 
-logging.basicConfig(level=logging.DEBUG)
+# import logging
+# logging.basicConfig(level=logging.DEBUG)
 
 text = """How to Deploy a Rocket Rust Web Application on VPS
 August 15, 2020
@@ -302,7 +304,34 @@ PassWordAuthentication no
 UsePam no
 ChallengeResponseAuthentication no"""
 
-summary = TextSummarizer().summarize_text(text)
 
-print(summary)
-print(summary.estimated_cost_usd)
+def main_sync() -> None:
+    summary = TextSummarizer().summarize_text(text)
+
+    print(summary)
+    print(summary.estimated_cost_usd)
+
+
+async def main_async() -> None:
+    summary = await TextSummarizer().summarize_text_async(text)
+
+    print(summary)
+    print(summary.estimated_cost_usd)
+
+
+async def main() -> None:
+    start = time.time()
+    print("Running async")
+    await main_async()
+    end = time.time()
+    print(f"Finished async in {end - start}s")
+
+    start = time.time()
+    print("Running sync")
+    main_sync()
+    end = time.time()
+    print(f"Finished sync in {end - start}s")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
