@@ -122,7 +122,7 @@ class TextSummarizer(AiInterface):
             return summaries[0]
         else:
             final_input = " ".join(s.text for s in summaries)
-            final_summary = self._summarize_chunk(final_input, max_tokens=2000)
+            final_summary = self._summarize_chunk(final_input, max_tokens=1500)
             return Summary(
                 text=final_summary.text,
                 num_tokens=final_summary.num_tokens
