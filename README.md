@@ -36,6 +36,7 @@ summary.estimated_cost_usd=0.0015860000000000002
 - [x] Sync APIs
 - [x] Async APIs - **much faster than the sync api!**
 - [ ] Summarize audio with a single API call
+- [ ] CLI
 
 ## Caveats
 
