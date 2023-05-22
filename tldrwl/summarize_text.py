@@ -9,7 +9,7 @@ from typing import List
 
 import openai
 
-from ai_interface import AiInterface
+from .ai_interface import AiInterface
 
 
 @dataclass

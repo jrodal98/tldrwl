@@ -2,7 +2,7 @@
 # www.jrodal.com
 
 
-from register import Register
+from .register import Register
 
 
 class AiInterface:
