@@ -14,7 +14,6 @@ Summarize webpages, Youtube videos, and texts with a single api call:
 from tldrwl.summarize import Summarizer
 Summarizer().summarize_sync("<webpage url | youtube url | text>")
 await Summarizer().summarize_async("<webpage url | youtube url | text>")
-
 ```
 
 Example:
