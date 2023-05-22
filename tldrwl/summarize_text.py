@@ -103,7 +103,7 @@ class TextSummarizer(AiInterface):
         else:
             final_input = " ".join(s.text for s in summaries)
             final_summary = await self._summarize_chunk_async(
-                final_input, max_tokens=2000
+                final_input, max_tokens=1500
             )
             return Summary(
                 text=final_summary.text,
