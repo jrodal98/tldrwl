@@ -46,6 +46,7 @@ class TextSummarizer(AiInterface):
         chunk_size: int = 8000,
         max_num_chunks: int = 15,
     ) -> None:
+        super().__init__()
         self._model = model
         self._prompt_string = prompt_string
         self._chunk_size = chunk_size
