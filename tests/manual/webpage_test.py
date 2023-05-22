@@ -3,24 +3,24 @@
 
 import asyncio
 import time
-from tldrwl.summarize_webpage import WebpageSummarizer
+from tldrwl.summarize import Summarizer
 
-import logging
+# import logging
+#
+# logging.basicConfig(level=logging.DEBUG)
 
-logging.basicConfig(level=logging.DEBUG)
-
-webpage = "https://en.wikipedia.org/wiki/ChatGPT"
+webpage = "https://www.jrodal.com/posts/how-to-deploy-rocket-rust-web-app-on-vps/"
 
 
 def main_sync() -> None:
-    summary = WebpageSummarizer().summarize_webpage(webpage)
+    summary = Summarizer().summarize_sync(webpage)
 
     print(summary)
     print(f"{summary.estimated_cost_usd=}")
 
 
 async def main_async() -> None:
-    summary = await WebpageSummarizer().summarize_webpage_async(webpage)
+    summary = await Summarizer().summarize_async(webpage)
 
     print(summary)
     print(f"{summary.estimated_cost_usd=}")

@@ -8,9 +8,9 @@ from typing import Optional, Pattern
 from youtube_transcript_api import YouTubeTranscriptApi  # pyright: ignore
 from youtube_transcript_api.formatters import TextFormatter  # pyright: ignore
 
-from .ai_interface import AiInterface
+from .ai_interface import AiInterface, Summary
 from .exception import TldrwlVideoUrlParsingException
-from .summarize_text import TextSummarizer, TextSummary
+from .summarize_text import TextSummarizer
 
 
 class YoutubeSummarizer(AiInterface):
@@ -39,10 +39,10 @@ class YoutubeSummarizer(AiInterface):
         self._logger.debug(f"Done getting transcript for {video_id}")
         return TextFormatter().format_transcript(transcript)  # type: ignore
 
-    async def summarize_video_async(self, url: str) -> TextSummary:
-        transcript = self._get_video_transcript(url)
-        return await self._text_summarizer.summarize_text_async(transcript)
+    async def summarize_async(self, text: str) -> Summary:
+        transcript = self._get_video_transcript(text)
+        return await self._text_summarizer.summarize_async(transcript)
 
-    def summarize_video(self, url: str) -> TextSummary:
-        transcript = self._get_video_transcript(url)
-        return self._text_summarizer.summarize_text(transcript)
+    def summarize_sync(self, text: str) -> Summary:
+        transcript = self._get_video_transcript(text)
+        return self._text_summarizer.summarize_sync(transcript)

@@ -3,24 +3,24 @@
 
 import asyncio
 import time
-from tldrwl.summarize_youtube import YoutubeSummarizer
+from tldrwl.summarize import Summarizer
 
-import logging
+# import logging
+#
+# logging.basicConfig(level=logging.DEBUG)
 
-logging.basicConfig(level=logging.DEBUG)
-
-yt_video = "https://www.youtube.com/watch?v=6E3-MRnh8TQ"
+yt_video = "https://www.youtube.com/watch?v=--khbXchTeE"
 
 
 def main_sync() -> None:
-    summary = YoutubeSummarizer().summarize_video(yt_video)
+    summary = Summarizer().summarize_sync(yt_video)
 
     print(summary)
     print(f"{summary.estimated_cost_usd=}")
 
 
 async def main_async() -> None:
-    summary = await YoutubeSummarizer().summarize_video_async(yt_video)
+    summary = await Summarizer().summarize_async(yt_video)
 
     print(summary)
     print(f"{summary.estimated_cost_usd=}")
