@@ -1,4 +1,4 @@
-# tldrwl (too long, didn't read/write/listen)
+# tldrwl (too long, didn't read/watch/listen)
 
 ## About
 
