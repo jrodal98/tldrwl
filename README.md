@@ -6,25 +6,43 @@
 pip install tldrwl
 ```
 
-## About
+## Usage
 
-Summarize webpages, Youtube videos, and texts with a single api call:
+Summarize webpages, Youtube videos, and texts with a single api call
+
+Setup:
+
+```
+export OPENAI_API_KEY="<your api key here>"
+```
+
+CLI:
+
+```
+python3 -m tldrwl '<webpage url | youtube url | text>'
+```
+
+Library:
 
 ```
 from tldrwl.summarize import Summarizer
-Summarizer().summarize_sync("<webpage url | youtube url | text>")
+
+# Async API
 await Summarizer().summarize_async("<webpage url | youtube url | text>")
+# Sync API
+Summarizer().summarize_sync("<webpage url | youtube url | text>")
 ```
 
 Example:
 
 ```
->>> from tldrwl.summarize import Summarizer
->>> summary = Summarizer().summarize_sync("https://www.youtube.com/watch?v=--khbXchTeE")
->>> print(summary)
-Summary(text="OpenAI's GPT-4 is an advanced AI system that can generate up to 25,000 words of text and understand images to express logical ideas about them. Despite its imperfections, it has great potential to add value to everyday life, especially in the field of education, where it can act as a personal math tutor or teach a wide range of subjects. OpenAI and Microsoft are partnering to shape this technology so that it's beneficial to society. The AI's development is an accumulation of all past technological advancements and opens up possibilities for successors with more capabilities. OpenAI recognizes the importance of making the technology useful to everyone, not just early adopters, and thus encourages participation to learn how it can be helpful. The team has put in place internal guardrails for safety and privacy concerns and will continue to learn and improve.", num_tokens=793, model=<Model.GPT35TURBO: 'gpt-3.5-turbo'>)
->>> print(f"{summary.estimated_cost_usd=}")
-summary.estimated_cost_usd=0.0015860000000000002
+python3 -m tldrwl 'https://www.youtube.com/watch?v=--khbXchTeE'
+```
+
+```
+Summary: GPT-4 is an advanced AI system developed by OpenAI that can generate up to 25,000 words of text, eight times more than the previous model, ChatGPT. It can understand images and express logical ideas about them, making it a powerful tool for education and personalized learning. The development of GPT-4 has been focused on making it safer, more aligned, and more useful for society, with internal guardrails around adversarial usage, unwanted content, and privacy concerns. The partnership with Microsoft aims to shape this technology into something that's truly
+useful for the world and can improve productivity, ultimately leading to a better quality of life. While limited, GPT-4 is an important step towards highly advanced and capable AI systems, and OpenAI hopes to make it useful to everyone, not just early adopters.
+Estimated cost (usd): $0.0016
 ```
 
 ## Features
@@ -32,11 +50,13 @@ summary.estimated_cost_usd=0.0015860000000000002
 - [x] Summarize text with a single API call
 - [x] Summarize webpages with a single API call
 - [x] Summarize Youtube videos with a single API call
+- [ ] Summarize text file with a single API call
 - [x] Report number of tokens + cost per request
 - [x] Sync APIs
 - [x] Async APIs - **much faster than the sync api!**
+- [x] CLI
 - [ ] Summarize audio with a single API call
-- [ ] CLI
+- [ ] CI/CD to publish to automatically PyPI
 
 ## Caveats
 
@@ -76,8 +96,7 @@ See `tests/manual` for some examples.
 ### Setup API key
 
 ```
-┌─jrodal@jrodal-850 tldrwl on  master [!+?] via 🐍 v3.10.6 (.venv)
-└─> export OPENAI_API_KEY="<REDACTED>"
+export OPENAI_API_KEY="<REDACTED>"
 ```
 
 ### Text summary
