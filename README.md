@@ -53,7 +53,7 @@ Estimated cost (usd): $0.0016
 - [ ] Summarize text file with a single API call
 - [x] Report number of tokens + cost per request
 - [x] Sync APIs
-- [x] Async APIs - **much faster than the sync api!**
+- [x] Async APIs - **much faster than the sync api**
 - [x] CLI
 - [ ] Summarize audio with a single API call
 - [ ] CI/CD to publish to automatically PyPI
@@ -150,3 +150,4 @@ Finished sync in 29.253196239471436s
 2. Activate venv `source .venv/bin/activate`
 3. Install requirements to venv `pip install -r requirements.txt`
 4. Setup local import path resolution `make develop`
+5. You can run `python tldrwl` to trigger the CLI or `python tests/<path to test>` to trigger a test file
