@@ -52,13 +52,14 @@ Estimated cost (usd): $0.0016
 - [x] Summarize text with a single API call
 - [x] Summarize webpages with a single API call
 - [x] Summarize Youtube videos with a single API call
-- [ ] Summarize text file with a single API call
+- [ ] Summarize basic plain text file with a single API call
+- [ ] Summarize rich text file with a single API call
+- [ ] Summarize audio with a single API call
 - [x] Report number of tokens + cost per request
 - [x] Sync APIs
 - [x] Async APIs - **much faster than the sync api**
 - [x] CLI
-- [ ] Summarize audio with a single API call
-- [ ] CI/CD to publish to automatically PyPI
+- [x] CI/CD to publish to automatically PyPI
 
 ## Caveats
 
