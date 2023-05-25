@@ -3,36 +3,9 @@
 
 import argparse
 import asyncio
-import logging
 
-from tldrwl.summarize import Summarizer
-
-
-class VerboseFilter(logging.Filter):
-    def __init__(self, name: str = "", very_verbose_logging: bool = False) -> None:
-        super().__init__(name)
-        self.very_verbose_logging = very_verbose_logging
-
-    def filter(self, record: logging.LogRecord):
-        return (
-            record.name.startswith("tldrwl")
-            or record.levelno != logging.DEBUG
-            or self.very_verbose_logging
-        )
-
-
-def _init_logging(args: argparse.Namespace) -> None:
-    if args.disable_logging:
-        return
-
-    log_level = logging.INFO
-    if args.verbose_logging or args.very_verbose_logging:
-        log_level = logging.DEBUG
-
-    logging.basicConfig(level=log_level)  # or any other desired logging configuration
-
-    for handler in logging.root.handlers:
-        handler.addFilter(VerboseFilter(very_verbose_logging=args.very_verbose_logging))
+from tldrwl.summarize import Summarizer  # pyright: ignore
+from tldrwl.logger import init_logging  # pyright: ignore
 
 
 async def main():
@@ -51,7 +24,7 @@ async def main():
     )
     args = parser.parse_args()
 
-    _init_logging(args)
+    init_logging(args)
 
     summary = await Summarizer().summarize_async(args.input)
     print(f"Summary: {summary.text}")
