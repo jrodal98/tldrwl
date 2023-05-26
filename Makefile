@@ -10,4 +10,5 @@ upload:
 	twine upload dist/* 
 clean:
 	rm -rf dist build
-
+test:
+	ls tests/manual | xargs -I {} python "tests/manual/{}"
