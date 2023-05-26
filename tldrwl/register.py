@@ -18,7 +18,6 @@ class Register:
     @classmethod
     def register(
         cls,
-        *,
         openai_api_key_env_var: str = "OPENAI_API_KEY",
     ) -> None:
         openai_api_key = os.getenv(openai_api_key_env_var)
