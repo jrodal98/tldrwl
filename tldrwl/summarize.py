@@ -2,6 +2,7 @@
 # www.jrodal.com
 
 import logging
+import asyncio
 
 from tldrwl.ai_interface import AiInterface, Summary
 from tldrwl.summarizers.gpt_35_turbo_text_summarizer import Gpt35TurboTextSummarizer
@@ -17,13 +18,27 @@ class Summarizer(AiInterface):
 
     async def _transform_text(self, text: str) -> str:
         if YoutubeTransformer.get_video_id(text):
-            self._logger.debug("Using YoutubeSummarizer")
+            self._logger.debug(f"Using YoutubeSummarizer on {text}")
             return await YoutubeTransformer(text).get_text()
         elif WebpageTransformer.is_url(text):
-            self._logger.debug("Using WebpageSummarizer")
+            self._logger.debug(f"Using WebpageSummarizer on {text}")
             return await WebpageTransformer(text).get_text()
+        elif len(text) < 500:
+            self._logger.debug("Text is short... searching for urls")
+            urls = WebpageTransformer.extract_urls(text)
+            transformed = await asyncio.gather(
+                *[self._transform_text(url) for url in urls]
+            )
+            # TODO: exact text replacement for edge-case scenarios like this:
+            # https://www.jrodal.com/
+            # https://www.jrodal.com/posts/how-to-deploy-rocket-rust-web-app-on-vps/
+            for url, transform in zip(urls, transformed):
+                self._logger.debug(f"Injecting content from {url}")
+                text = text.replace(url, transform)
+            return text
+
         else:
-            self._logger.debug("Applying no transformations to text")
+            self._logger.debug("Applying no further transformations to text")
             return text
 
     async def _summarize_async(self, text: str) -> Summary:

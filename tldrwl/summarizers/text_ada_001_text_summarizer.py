@@ -18,7 +18,7 @@ class TextAda001TextSummarizer(TextSummarizer):
         *,
         model: Model = Model.TEXTADA001,
         prompt_string: str = "Write a detailed summary of the following:\n\n{}\n",
-        chunk_size: int = 6000,
+        chunk_size: int = 4000,
         max_num_chunks: int = 10,
     ) -> None:
         super().__init__(

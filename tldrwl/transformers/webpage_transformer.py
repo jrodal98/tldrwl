@@ -5,7 +5,7 @@ import re
 import logging
 import bs4
 import aiohttp
-from typing import Pattern
+from typing import Pattern, Set
 
 from tldrwl.transformers.transformer import Transformer
 
@@ -25,6 +25,15 @@ class WebpageTransformer(Transformer):
         super().__init__()
         self._url = url
         self._logger = logging.getLogger(__name__)
+
+    @classmethod
+    def extract_urls(cls, text: str) -> Set[str]:
+        urls: Set[str] = set()
+        for word in text.split():
+            url = cls._pattern.search(word)
+            if url:
+                urls.add(url.group())
+        return urls
 
     @classmethod
     def is_url(cls, text: str) -> bool:
