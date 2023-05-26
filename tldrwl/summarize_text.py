@@ -9,6 +9,8 @@ import textwrap
 import openai
 from typing import List, Dict, Any
 
+from exception import TldrwlNoSummaryError, TldrwlRateLimitError
+
 from .ai_interface import AiInterface, Model, Summary
 
 MAX_TOKEN_RESPONSE = 1500
@@ -60,7 +62,7 @@ class TextSummarizer(AiInterface):
                 )
                 await asyncio.sleep(retry_interval)
 
-        return Summary(text="", num_tokens=0, model=self._model)
+        raise TldrwlRateLimitError.make_error("Rate limited after 3 attempts")
 
     def _get_chunks(self, text: str) -> List[str]:
         text_length = len(text)
@@ -78,7 +80,11 @@ class TextSummarizer(AiInterface):
             *[self._summarize_chunk_async(chunk, max_tokens=250) for chunk in chunks]
         )
         if len(summaries) == 0:
-            return Summary(text="", num_tokens=0, model=self._model)
+            raise TldrwlNoSummaryError(
+                msg=f"No summary was generatd for {text}",
+                cause="I don't know",
+                remediation="I don't know",
+            )
         elif len(summaries) == 1:
             return summaries[0]
         else:

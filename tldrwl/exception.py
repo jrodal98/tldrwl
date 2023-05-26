@@ -49,3 +49,17 @@ class TldrwlAsyncioRunInEventLoop(TldrwlException):
             cause="You tried to run sync code from inside an async loop",
             remediation="Use the .summarize_async APIS, not .summarize_sync",
         )
+
+
+class TldrwlRateLimitError(TldrwlException):
+    @classmethod
+    def make_error(cls, msg: str) -> "TldrwlRateLimitError":
+        return cls(
+            msg=msg,
+            cause="OpenAI rate limited you",
+            remediation="See this page for more information: https://platform.openai.com/docs/guides/rate-limits",
+        )
+
+
+class TldrwlNoSummaryError(TldrwlException):
+    pass
