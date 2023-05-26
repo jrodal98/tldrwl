@@ -11,6 +11,7 @@ from youtube_transcript_api.formatters import TextFormatter  # pyright: ignore
 from tldrwl.transformers.transformer import Transformer
 
 from tldrwl.exception import TldrwlVideoUrlParsingException
+from tldrwl.transformers.webpage_transformer import WebpageTransformer
 
 
 class YoutubeTransformer(Transformer):
@@ -22,6 +23,10 @@ class YoutubeTransformer(Transformer):
         super().__init__()
         self._url = url
         self._logger = logging.getLogger(__name__)
+
+    @classmethod
+    def is_youtube_url(cls, url: str) -> bool:
+        return WebpageTransformer.is_url(url) and cls.get_video_id(url) is not None
 
     @classmethod
     def get_video_id(cls, url: str) -> Optional[str]:
