@@ -8,19 +8,19 @@ from typing import Optional, Pattern
 from youtube_transcript_api import YouTubeTranscriptApi  # pyright: ignore
 from youtube_transcript_api.formatters import TextFormatter  # pyright: ignore
 
-from .ai_interface import AiInterface, Summary
+from .transformer import Transformer
+
 from .exception import TldrwlVideoUrlParsingException
-from .gpt_35_turbo_text_summarizer import Gpt35TurboTextSummarizer
 
 
-class YoutubeSummarizer(AiInterface):
+class YoutubeTransformer(Transformer):
     _pattern: Pattern[str] = re.compile(
         r"(?:[?&]v=|\/embed\/|\/1\/|\/v\/|https:\/\/(?:www\.)?youtu\.be\/)([^&\n?#]+)"
     )
 
-    def __init__(self) -> None:
+    def __init__(self, url: str) -> None:
         super().__init__()
-        self._text_summarizer = Gpt35TurboTextSummarizer()
+        self._url = url
         self._logger = logging.getLogger(__name__)
 
     @classmethod
@@ -30,15 +30,11 @@ class YoutubeSummarizer(AiInterface):
             return match.group(1)
         return None
 
-    def _get_video_transcript(self, url: str) -> str:
-        video_id = self.get_video_id(url)
+    async def get_text(self) -> str:
+        video_id = self.get_video_id(self._url)
         if not video_id:
-            raise TldrwlVideoUrlParsingException.make_error(video_url=url)
+            raise TldrwlVideoUrlParsingException.make_error(video_url=self._url)
         self._logger.debug(f"Getting transcript for {video_id}")
         transcript = YouTubeTranscriptApi.get_transcript(video_id)  # type: ignore
         self._logger.debug(f"Done getting transcript for {video_id}")
         return TextFormatter().format_transcript(transcript)  # type: ignore
-
-    async def _summarize_async(self, text: str) -> Summary:
-        transcript = self._get_video_transcript(text)
-        return await self._text_summarizer.summarize_async(transcript)
