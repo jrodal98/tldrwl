@@ -15,6 +15,7 @@ from tldrwl.exception import TldrwlNoSummaryError, TldrwlRateLimitError
 
 class TextSummarizer(AiInterface):
     MAX_TOKEN_RESPONSE: int = 1500
+    MAX_TOKEN_INPUT: int = 250
 
     def __init__(
         self,
@@ -61,7 +62,10 @@ class TextSummarizer(AiInterface):
     async def _summarize_async(self, text: str) -> Summary:
         chunks = self._get_chunks(text)
         summaries = await asyncio.gather(
-            *[self._summarize_chunk_async(chunk, max_tokens=250) for chunk in chunks]
+            *[
+                self._summarize_chunk_async(chunk, max_tokens=self.MAX_TOKEN_INPUT)
+                for chunk in chunks
+            ]
         )
         if len(summaries) == 0:
             raise TldrwlNoSummaryError(

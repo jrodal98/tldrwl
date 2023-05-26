@@ -12,11 +12,14 @@ from tldrwl.register import Register
 
 class Model(Enum):
     GPT35TURBO = "gpt-3.5-turbo"
+    TEXTADA001 = "text-ada-001"
 
     @property
     def cost_per_1000_tokens(self) -> float:
         if self is self.GPT35TURBO:
             return 0.002
+        if self is self.TEXTADA001:
+            return 0.0004
         else:
             return 0
 
