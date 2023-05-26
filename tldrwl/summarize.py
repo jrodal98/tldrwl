@@ -20,7 +20,7 @@ class Summarizer(AiInterface):
         self._summarizer = text_summarizer or Gpt35TurboTextSummarizer()
 
     async def _transform_text(self, text: str) -> str:
-        if YoutubeTransformer.get_video_id(text):
+        if YoutubeTransformer.is_youtube_url(text):
             self._logger.debug(f"Using YoutubeSummarizer on {text}")
             return await YoutubeTransformer(text).get_text()
         elif WebpageTransformer.is_url(text):
