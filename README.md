@@ -1,3 +1,5 @@
+[![PyPI](https://img.shields.io/pypi/v/tldrwl.svg)](https://pypi.python.org/pypi/tldrwl)
+
 # tldrwl (too long, didn't read/watch/listen)
 
 ## Install
