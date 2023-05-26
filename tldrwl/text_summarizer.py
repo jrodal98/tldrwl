@@ -5,13 +5,12 @@ from abc import abstractmethod
 import asyncio
 import logging
 import textwrap
-
-import openai
 from typing import List
 
-from exception import TldrwlNoSummaryError, TldrwlRateLimitError
+import openai
 
 from .ai_interface import AiInterface, Model, Summary
+from .exception import TldrwlNoSummaryError, TldrwlRateLimitError
 
 
 class TextSummarizer(AiInterface):

@@ -28,6 +28,7 @@ async def main_async(text: str) -> None:
     print(f"runtime: {end - start:.4f}s")
 
 
-def run_tests(text: str) -> None:
+def run_tests(text: str, include_sync: bool = False) -> None:
     asyncio.run(main_async(text))
-    main_sync(text)
+    if include_sync:
+        main_sync(text)
