@@ -28,7 +28,3 @@ class Summarizer(AiInterface):
     async def _summarize_async(self, text: str) -> Summary:
         summarizer = self.get_summarizer(text)
         return await summarizer.summarize_async(text)
-
-    def _summarize_sync(self, text: str) -> Summary:
-        summarizer = self.get_summarizer(text)
-        return summarizer.summarize_sync(text)

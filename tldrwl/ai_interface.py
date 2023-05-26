@@ -2,11 +2,12 @@
 # www.jrodal.com
 
 from abc import ABC, abstractmethod
+import asyncio
 from dataclasses import dataclass
-
-from .exception import TldrwlException
-from .register import Register
 from enum import Enum
+
+from .exception import TldrwlAsyncioRunInEventLoop, TldrwlException
+from .register import Register
 
 
 class Model(Enum):
@@ -33,22 +34,17 @@ class Summary:
 
 class AiInterface(ABC):
     @abstractmethod
-    def _summarize_sync(self, text: str) -> Summary:
-        pass
-
-    @abstractmethod
     async def _summarize_async(self, text: str) -> Summary:
         pass
 
     def summarize_sync(self, text: str) -> Summary:
-        if not Register.is_registered():
-            Register.register()
         try:
-            return self._summarize_sync(text)
-        except TldrwlException:
-            raise
-        except Exception as e:
-            raise TldrwlException(msg=str(e), cause="n/a", remediation="n/a") from e
+            return asyncio.run(self.summarize_async(text))
+        except RuntimeError as e:
+            if "asyncio.run() cannot be called from a running event loop" in str(e):
+                raise TldrwlAsyncioRunInEventLoop.make_error(str(e)) from e
+            else:
+                raise
 
     async def summarize_async(self, text: str) -> Summary:
         if not Register.is_registered():

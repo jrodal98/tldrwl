@@ -2,12 +2,7 @@
 # www.jrodal.com
 
 import asyncio
-import time
 from tldrwl.summarize import Summarizer
-
-# import logging
-#
-# logging.basicConfig(level=logging.DEBUG)
 
 text = """Automatically Deploy Hugo Site With Github Actions
 March 20, 2022
@@ -106,6 +101,7 @@ Go into incognito mode or open a new browser if nothing has changed (it’s poss
 
 
 def main_sync() -> None:
+    print("Sync")
     summary = Summarizer().summarize_sync(text)
 
     print(summary)
@@ -113,25 +109,13 @@ def main_sync() -> None:
 
 
 async def main_async() -> None:
+    print("Async")
     summary = await Summarizer().summarize_async(text)
 
     print(summary)
     print(f"{summary.estimated_cost_usd=}")
 
 
-async def main() -> None:
-    start = time.time()
-    print("Running async")
-    await main_async()
-    end = time.time()
-    print(f"Finished async in {end - start}s")
-
-    start = time.time()
-    print("Running sync")
-    main_sync()
-    end = time.time()
-    print(f"Finished sync in {end - start}s")
-
-
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(main_async())
+    main_sync()

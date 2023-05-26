@@ -39,3 +39,13 @@ class TldrwlVideoUrlParsingException(TldrwlException):
             cause="Url may be invalid or regex pattern is not comprehensive",
             remediation="Fix url if it's broken, maybe switch to more common format",
         )
+
+
+class TldrwlAsyncioRunInEventLoop(TldrwlException):
+    @classmethod
+    def make_error(cls, msg: str) -> "TldrwlAsyncioRunInEventLoop":
+        return cls(
+            msg=msg,
+            cause="You tried to run sync code from inside an async loop",
+            remediation="Use the .summarize_async APIS, not .summarize_sync",
+        )

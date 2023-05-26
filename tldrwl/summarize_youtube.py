@@ -42,7 +42,3 @@ class YoutubeSummarizer(AiInterface):
     async def _summarize_async(self, text: str) -> Summary:
         transcript = self._get_video_transcript(text)
         return await self._text_summarizer.summarize_async(transcript)
-
-    def _summarize_sync(self, text: str) -> Summary:
-        transcript = self._get_video_transcript(text)
-        return self._text_summarizer.summarize_sync(transcript)

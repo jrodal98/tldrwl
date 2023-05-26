@@ -4,20 +4,20 @@
 import asyncio
 from tldrwl.summarize import Summarizer
 
-yt_video = "https://www.youtube.com/watch?v=--khbXchTeE"
+text = "Test input"
 
 
 def main_sync() -> None:
-    print("Sync")
-    summary = Summarizer().summarize_sync(yt_video)
+    print("Sync test")
+    summary = Summarizer().summarize_sync(text)
 
     print(summary)
     print(f"{summary.estimated_cost_usd=}")
 
 
 async def main_async() -> None:
-    print("Async")
-    summary = await Summarizer().summarize_async(yt_video)
+    print("Async test")
+    summary = await Summarizer().summarize_async(text)
 
     print(summary)
     print(f"{summary.estimated_cost_usd=}")

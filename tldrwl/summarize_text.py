@@ -2,7 +2,6 @@
 # www.jrodal.com
 
 import asyncio
-import time
 import logging
 import re
 import textwrap
@@ -63,26 +62,6 @@ class TextSummarizer(AiInterface):
 
         return Summary(text="", num_tokens=0, model=self._model)
 
-    def _summarize_chunk(self, chunk: str, max_tokens: int) -> Summary:
-        prompt = self._prompt_string.format(chunk)
-
-        for _ in range(0, 3):
-            try:
-                response = openai.ChatCompletion.create(  # type: ignore
-                    model=self._model.value,
-                    messages=[{"role": "user", "content": prompt}],
-                    max_tokens=max_tokens,
-                )
-                return self._response_to_text_summary(response)  # type: ignore
-            except openai.error.RateLimitError:  # pyright: ignore
-                retry_interval = 3
-                self._logger.debug(
-                    f"Rate limited by openai - resting for {retry_interval}s"
-                )
-                time.sleep(retry_interval)
-
-        return Summary(text="", num_tokens=0, model=self._model)
-
     def _get_chunks(self, text: str) -> List[str]:
         text_length = len(text)
         self._logger.debug(f"{text_length=}")
@@ -108,26 +87,6 @@ class TextSummarizer(AiInterface):
             # of hoping that this will work - maybe catch this exception?
             # noqa openai.error.InvalidRequestError: This model's maximum context length is 4097 tokens. However, you requested 4612 tokens (3112 in the messages, 1500 in the completion). Please reduce the length of the messages or completion.
             final_summary = await self._summarize_chunk_async(
-                final_input, max_tokens=MAX_TOKEN_RESPONSE
-            )
-            return Summary(
-                text=final_summary.text,
-                num_tokens=final_summary.num_tokens
-                + sum(s.num_tokens for s in summaries),
-                model=self._model,
-            )
-
-    def _summarize_sync(self, text: str) -> Summary:
-        chunks = self._get_chunks(text)
-
-        summaries = [self._summarize_chunk(chunk, max_tokens=250) for chunk in chunks]
-        if len(summaries) == 0:
-            return Summary(text="", num_tokens=0, model=self._model)
-        elif len(summaries) == 1:
-            return summaries[0]
-        else:
-            final_input = " ".join(s.text for s in summaries)
-            final_summary = self._summarize_chunk(
                 final_input, max_tokens=MAX_TOKEN_RESPONSE
             )
             return Summary(
