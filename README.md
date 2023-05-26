@@ -1,5 +1,3 @@
-[![PyPI version](https://badge.fury.io/py/tldrwl.svg)](https://badge.fury.io/py/tldrwl)
-
 # tldrwl (too long, didn't read/watch/listen)
 
 ## Install
