@@ -6,8 +6,8 @@ import asyncio
 from dataclasses import dataclass
 from enum import Enum
 
-from .exception import TldrwlAsyncioRunInEventLoop, TldrwlException
-from .register import Register
+from tldrwl.exception import TldrwlAsyncioRunInEventLoop, TldrwlException
+from tldrwl.register import Register
 
 
 class Model(Enum):

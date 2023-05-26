@@ -3,10 +3,10 @@
 
 import logging
 
-from .ai_interface import AiInterface, Summary
-from .gpt_35_turbo_text_summarizer import Gpt35TurboTextSummarizer
-from .webpage_transformer import WebpageTransformer
-from .youtube_transformer import YoutubeTransformer
+from tldrwl.ai_interface import AiInterface, Summary
+from tldrwl.summarizers.gpt_35_turbo_text_summarizer import Gpt35TurboTextSummarizer
+from tldrwl.transformers.webpage_transformer import WebpageTransformer
+from tldrwl.transformers.youtube_transformer import YoutubeTransformer
 
 
 class Summarizer(AiInterface):

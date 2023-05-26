@@ -5,9 +5,9 @@ import re
 
 import openai
 
-from .text_summarizer import TextSummarizer
+from tldrwl.summarizers.text_summarizer import TextSummarizer
 
-from .ai_interface import Summary
+from tldrwl.ai_interface import Summary
 
 
 class Gpt35TurboTextSummarizer(TextSummarizer):

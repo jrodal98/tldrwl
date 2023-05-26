@@ -9,8 +9,8 @@ from typing import List
 
 import openai
 
-from .ai_interface import AiInterface, Model, Summary
-from .exception import TldrwlNoSummaryError, TldrwlRateLimitError
+from tldrwl.ai_interface import AiInterface, Model, Summary
+from tldrwl.exception import TldrwlNoSummaryError, TldrwlRateLimitError
 
 
 class TextSummarizer(AiInterface):

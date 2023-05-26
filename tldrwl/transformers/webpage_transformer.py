@@ -7,7 +7,7 @@ import bs4
 import aiohttp
 from typing import Pattern
 
-from .transformer import Transformer
+from tldrwl.transformers.transformer import Transformer
 
 
 class WebpageTransformer(Transformer):

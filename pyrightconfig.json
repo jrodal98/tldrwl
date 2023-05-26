@@ -12,7 +12,7 @@
   },
   "executionEnvironments": [
     {
-      "root": "./tldrwl",
+      "root": ".",
       "venv": "./venv",
       "python": "python",
       "extraPaths": ["./libs"]

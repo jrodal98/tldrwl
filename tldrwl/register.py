@@ -5,7 +5,7 @@
 import os
 import openai
 
-from .exception import TldrwlRegisterException
+from tldrwl.exception import TldrwlRegisterException
 
 
 class Register:

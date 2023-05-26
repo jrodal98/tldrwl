@@ -8,9 +8,9 @@ from typing import Optional, Pattern
 from youtube_transcript_api import YouTubeTranscriptApi  # pyright: ignore
 from youtube_transcript_api.formatters import TextFormatter  # pyright: ignore
 
-from .transformer import Transformer
+from tldrwl.transformers.transformer import Transformer
 
-from .exception import TldrwlVideoUrlParsingException
+from tldrwl.exception import TldrwlVideoUrlParsingException
 
 
 class YoutubeTransformer(Transformer):
