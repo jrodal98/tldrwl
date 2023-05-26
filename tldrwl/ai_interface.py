@@ -32,10 +32,6 @@ class Summary:
 
 
 class AiInterface(ABC):
-    def __init_subclass__(cls) -> None:
-        if not Register.is_registered():
-            Register.register()
-
     @abstractmethod
     def _summarize_sync(self, text: str) -> Summary:
         pass
@@ -45,6 +41,8 @@ class AiInterface(ABC):
         pass
 
     def summarize_sync(self, text: str) -> Summary:
+        if not Register.is_registered():
+            Register.register()
         try:
             return self._summarize_sync(text)
         except TldrwlException:
@@ -53,6 +51,8 @@ class AiInterface(ABC):
             raise TldrwlException(msg=str(e), cause="n/a", remediation="n/a") from e
 
     async def summarize_async(self, text: str) -> Summary:
+        if not Register.is_registered():
+            Register.register()
         try:
             return await self._summarize_async(text)
         except TldrwlException:
