@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
 # www.jrodal.com
 
+from abc import abstractmethod
 import asyncio
 import logging
-import re
 import textwrap
 
 import openai
-from typing import List, Dict, Any
+from typing import List
 
 from exception import TldrwlNoSummaryError, TldrwlRateLimitError
 
 from .ai_interface import AiInterface, Model, Summary
 
-MAX_TOKEN_RESPONSE = 1500
-
 
 class TextSummarizer(AiInterface):
+    MAX_TOKEN_RESPONSE: int = 1500
+
     def __init__(
         self,
         *,
@@ -32,29 +32,14 @@ class TextSummarizer(AiInterface):
         self._max_num_chunks = max_num_chunks
         self._logger = logging.getLogger(__name__)
 
-    def _response_to_text_summary(self, response: Dict[str, Any]) -> Summary:
-        output_text = response["choices"][0]["message"]["content"]  # type: ignore
-        num_tokens = response["usage"]["total_tokens"]  # type: ignore
-        self._logger.debug(f"{num_tokens=}")
-
-        summary = re.sub(r"\s+", " ", output_text.strip())  # type: ignore
-        return Summary(
-            text=summary,
-            num_tokens=num_tokens,  # type: ignore
-            model=self._model,
-        )
+    @abstractmethod
+    async def _query_openai(self, text: str, max_tokens: int) -> Summary:
+        pass
 
     async def _summarize_chunk_async(self, chunk: str, max_tokens: int) -> Summary:
-        prompt = self._prompt_string.format(chunk)
-
         for _ in range(0, 3):
             try:
-                response = await openai.ChatCompletion.acreate(  # type: ignore
-                    model=self._model.value,
-                    messages=[{"role": "user", "content": prompt}],
-                    max_tokens=max_tokens,
-                )
-                return self._response_to_text_summary(response)  # type: ignore
+                return await self._query_openai(chunk, max_tokens)
             except openai.error.RateLimitError:  # pyright: ignore
                 retry_interval = 3
                 self._logger.debug(
@@ -93,7 +78,7 @@ class TextSummarizer(AiInterface):
             # of hoping that this will work - maybe catch this exception?
             # noqa openai.error.InvalidRequestError: This model's maximum context length is 4097 tokens. However, you requested 4612 tokens (3112 in the messages, 1500 in the completion). Please reduce the length of the messages or completion.
             final_summary = await self._summarize_chunk_async(
-                final_input, max_tokens=MAX_TOKEN_RESPONSE
+                final_input, max_tokens=self.MAX_TOKEN_RESPONSE
             )
             return Summary(
                 text=final_summary.text,

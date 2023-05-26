@@ -10,7 +10,7 @@ from youtube_transcript_api.formatters import TextFormatter  # pyright: ignore
 
 from .ai_interface import AiInterface, Summary
 from .exception import TldrwlVideoUrlParsingException
-from .summarize_text import TextSummarizer
+from .gpt_35_turbo_text_summarizer import Gpt35TurboTextSummarizer
 
 
 class YoutubeSummarizer(AiInterface):
@@ -20,7 +20,7 @@ class YoutubeSummarizer(AiInterface):
 
     def __init__(self) -> None:
         super().__init__()
-        self._text_summarizer = TextSummarizer()
+        self._text_summarizer = Gpt35TurboTextSummarizer()
         self._logger = logging.getLogger(__name__)
 
     @classmethod

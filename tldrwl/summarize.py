@@ -4,7 +4,7 @@
 import logging
 
 from .ai_interface import AiInterface, Summary
-from .summarize_text import TextSummarizer
+from .gpt_35_turbo_text_summarizer import Gpt35TurboTextSummarizer
 from .summarize_webpage import WebpageSummarizer
 from .summarize_youtube import YoutubeSummarizer
 
@@ -22,8 +22,8 @@ class Summarizer(AiInterface):
             self._logger.debug("Using WebpageSummarizer")
             return WebpageSummarizer()
         else:
-            self._logger.debug("Using TextSummarizer")
-            return TextSummarizer()
+            self._logger.debug("Using Gpt35TurboTextSummarizer")
+            return Gpt35TurboTextSummarizer()
 
     async def _summarize_async(self, text: str) -> Summary:
         summarizer = self.get_summarizer(text)
