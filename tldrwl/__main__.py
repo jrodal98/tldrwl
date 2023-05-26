@@ -4,8 +4,11 @@
 import argparse
 import asyncio
 
-from tldrwl.summarize import Summarizer  # pyright: ignore
-from tldrwl.logger import init_logging  # pyright: ignore
+from tldrwl.summarize import Summarizer
+from tldrwl.logger import init_logging
+from tldrwl.summarizers.text_ada_001_text_summarizer import (
+    TextAda001TextSummarizer,
+)
 
 
 async def main():
@@ -22,11 +25,27 @@ async def main():
         action="store_true",
         help="very verbose logging (include third party logs)",
     )
+    parser.add_argument(
+        "--cheap",
+        action="store_true",
+        help="Try to make the run cheaper (e.g. using less powerful models like Ada)",
+    )
     args = parser.parse_args()
 
-    init_logging(args)
+    init_logging(
+        disable_logging=args.disable_logging,
+        verbose_logging=args.verbose_logging,
+        very_verbose_logging=args.very_verbose_logging,
+    )
 
-    summary = await Summarizer().summarize_async(args.input)
+    if args.cheap:
+        text_summarizer = TextAda001TextSummarizer()
+    else:
+        text_summarizer = None
+
+    summary = await Summarizer(text_summarizer=text_summarizer).summarize_async(
+        args.input
+    )
     print(f"Summary: {summary.text}")
     print(f"Estimated cost (usd): ${summary.estimated_cost_usd:.4f}")
 

@@ -4,17 +4,20 @@
 import logging
 import asyncio
 
+from typing import Optional
+
 from tldrwl.ai_interface import AiInterface, Summary
+from tldrwl.summarizers.text_summarizer import TextSummarizer
 from tldrwl.summarizers.gpt_35_turbo_text_summarizer import Gpt35TurboTextSummarizer
 from tldrwl.transformers.webpage_transformer import WebpageTransformer
 from tldrwl.transformers.youtube_transformer import YoutubeTransformer
 
 
 class Summarizer(AiInterface):
-    def __init__(self) -> None:
+    def __init__(self, *, text_summarizer: Optional[TextSummarizer] = None) -> None:
         super().__init__()
         self._logger = logging.getLogger(__name__)
-        self._summarizer = Gpt35TurboTextSummarizer()
+        self._summarizer = text_summarizer or Gpt35TurboTextSummarizer()
 
     async def _transform_text(self, text: str) -> str:
         if YoutubeTransformer.get_video_id(text):

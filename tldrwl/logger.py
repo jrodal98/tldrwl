@@ -2,7 +2,6 @@
 # www.jrodal.com
 
 import logging
-import argparse
 
 
 class VerboseFilter(logging.Filter):
@@ -18,15 +17,20 @@ class VerboseFilter(logging.Filter):
         )
 
 
-def init_logging(args: argparse.Namespace) -> None:
-    if args.disable_logging:
+def init_logging(
+    *,
+    disable_logging: bool = False,
+    verbose_logging: bool = False,
+    very_verbose_logging: bool = False,
+) -> None:
+    if disable_logging:
         return
 
     log_level = logging.INFO
-    if args.verbose_logging or args.very_verbose_logging:
+    if verbose_logging or very_verbose_logging:
         log_level = logging.DEBUG
 
     logging.basicConfig(level=log_level)  # or any other desired logging configuration
 
     for handler in logging.root.handlers:
-        handler.addFilter(VerboseFilter(very_verbose_logging=args.very_verbose_logging))
+        handler.addFilter(VerboseFilter(very_verbose_logging=very_verbose_logging))
