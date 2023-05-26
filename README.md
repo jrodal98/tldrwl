@@ -57,7 +57,7 @@ Estimated cost (usd): $0.0016
 - [ ] Summarize audio with a single API call
 - [x] Report number of tokens + cost per request
 - [x] Sync APIs
-- [x] Async APIs - **much faster than the sync api**
+- [x] Async APIs
 - [x] CLI
 - [x] CI/CD to publish to automatically PyPI
 
@@ -66,7 +66,7 @@ Estimated cost (usd): $0.0016
 - Requires an OpenAI API key
   - Export to env: `export OPENAI_API_KEY="<your api key here>"`
 - Slow
-  - Small articles take ~20 seconds, longer articles and videos take a few minutes. **Prefer the async API, as that is much faster**. There is probably some more optimization to be had.
+  - Small articles take ~20 seconds, longer articles and videos take a few minutes. There is probably some more optimization to be had.
 - Cost
   - Can be expensive - by default, this uses the "gpt-3.5-turbo" model, which costs $0.002 / 1000 tokens. In the future, I may make the model customizable to allow for cheaper models.
   - To minimize cost, the library currently limits the number of input characters to 120,000. This limits the cost of a request to a maximum of ~$0.062. In the future, I may add a flag to modify or remove this limit.
