@@ -8,7 +8,7 @@ from typing import Optional
 
 from tldrwl.ai_interface import AiInterface, Summary
 from tldrwl.summarizers.text_summarizer import TextSummarizer
-from tldrwl.summarizers.gpt_35_turbo_text_summarizer import Gpt35TurboTextSummarizer
+from tldrwl.summarizers.chat_completions_text_summarizer import ChatCompletionsTextSummarizer
 from tldrwl.transformers.webpage_transformer import WebpageTransformer
 from tldrwl.transformers.youtube_transformer import YoutubeTransformer
 
@@ -17,7 +17,7 @@ class Summarizer(AiInterface):
     def __init__(self, *, text_summarizer: Optional[TextSummarizer] = None) -> None:
         super().__init__()
         self._logger = logging.getLogger(__name__)
-        self._summarizer = text_summarizer or Gpt35TurboTextSummarizer()
+        self._summarizer = text_summarizer or ChatCompletionsTextSummarizer()
 
     async def _transform_text(self, text: str) -> str:
         if YoutubeTransformer.is_youtube_url(text):

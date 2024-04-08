@@ -12,27 +12,44 @@ from tldrwl.register import Register
 
 class Model(Enum):
     GPT35TURBO = "gpt-3.5-turbo"
-    TEXTADA001 = "text-ada-001"
+    GPT4 = "gpt-4"
 
     @property
-    def cost_per_1000_tokens(self) -> float:
+    def cost_per_1000_prompt_tokens(self) -> float:
         if self is self.GPT35TURBO:
-            return 0.002
-        if self is self.TEXTADA001:
-            return 0.0004
+            return 0.0005
+        elif self is self.GPT4:
+            return 0.03
         else:
             return 0
+
+    @property
+    def cost_per_1000_completion_tokens(self) -> float:
+        if self is self.GPT35TURBO:
+            return 0.0015
+        elif self is self.GPT4:
+            return 0.06
+        else:
+            return 0
+
+    @classmethod
+    def default_model(cls) -> "Model":
+        return cls.GPT35TURBO
 
 
 @dataclass
 class Summary:
     text: str
-    num_tokens: int
+    prompt_tokens: int
+    completion_tokens: int
     model: Model
 
     @property
     def estimated_cost_usd(self) -> float:
-        return self.num_tokens * self.model.cost_per_1000_tokens * (1 / 1000)
+        return (
+            (self.prompt_tokens * self.model.cost_per_1000_prompt_tokens)
+            + (self.completion_tokens * self.model.cost_per_1000_completion_tokens)
+        ) * (1 / 1000)
 
 
 class AiInterface(ABC):

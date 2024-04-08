@@ -68,9 +68,8 @@ Estimated cost (usd): $0.0016
 - Slow
   - Small articles take ~20 seconds, longer articles and videos take a few minutes. There is probably some more optimization to be had.
 - Cost
-  - Can be expensive - by default, this uses the "gpt-3.5-turbo" model, which costs $0.002 / 1000 tokens.
-  - To minimize cost, the library currently limits the number of input characters to 120,000. This limits the cost of a request to a maximum of ~$0.062. In the future, I may add a flag to modify or remove this limit.
-  - If you pass `--cheap` to the command line, the ada model will be used, which is 5x cheaper, but not very good.
+  - Can be expensive - by default, this uses the "gpt-3.5-turbo" model, which is much cheaper than gpt4
+  - To minimize cost, the library currently limits the number of input characters to 120,000.
 
 To illustrate speed and cost: [This wikipedia page](https://en.wikipedia.org/wiki/List_of_common_misconceptions) hits the maximum limit:
 

@@ -20,13 +20,13 @@ class TextSummarizer(AiInterface):
     def __init__(
         self,
         *,
-        model: Model = Model.GPT35TURBO,
+        model: Model | None = None,
         prompt_string: str = "Write a detailed summary of the following:\n\n{}\n",
         chunk_size: int = 12000,
         max_num_chunks: int = 10,
     ) -> None:
         super().__init__()
-        self._model = model
+        self._model = model or Model.default_model()
         self._prompt_string = prompt_string
         self._chunk_size = chunk_size
         self._max_num_chunks = max_num_chunks
@@ -40,7 +40,7 @@ class TextSummarizer(AiInterface):
         for _ in range(0, 3):
             try:
                 return await self._query_openai(chunk, max_tokens)
-            except openai.error.RateLimitError:  # pyright: ignore
+            except openai.RateLimitError:  # pyright: ignore
                 retry_interval = 3
                 self._logger.debug(
                     f"Rate limited by openai - resting for {retry_interval}s"
@@ -85,7 +85,9 @@ class TextSummarizer(AiInterface):
             )
             return Summary(
                 text=final_summary.text,
-                num_tokens=final_summary.num_tokens
-                + sum(s.num_tokens for s in summaries),
+                prompt_tokens=final_summary.prompt_tokens
+                + sum(s.prompt_tokens for s in summaries),
+                completion_tokens=final_summary.completion_tokens
+                + sum(s.completion_tokens for s in summaries),
                 model=self._model,
             )

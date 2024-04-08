@@ -6,9 +6,10 @@ import asyncio
 
 from tldrwl.summarize import Summarizer
 from tldrwl.logger import init_logging
-from tldrwl.summarizers.text_ada_001_text_summarizer import (
-    TextAda001TextSummarizer,
+from tldrwl.summarizers.chat_completions_text_summarizer import (
+    ChatCompletionsTextSummarizer,
 )
+from tldrwl.ai_interface import Model
 
 
 async def main():
@@ -26,9 +27,11 @@ async def main():
         help="very verbose logging (include third party logs)",
     )
     parser.add_argument(
-        "--cheap",
-        action="store_true",
-        help="Try to make the run cheaper (e.g. using less powerful models like Ada)",
+        "--model",
+        type=Model,
+        choices=list(Model),
+        default=None,
+        help="Model to use for summarization",
     )
     args = parser.parse_args()
 
@@ -38,10 +41,7 @@ async def main():
         very_verbose_logging=args.very_verbose_logging,
     )
 
-    if args.cheap:
-        text_summarizer = TextAda001TextSummarizer()
-    else:
-        text_summarizer = None
+    text_summarizer = ChatCompletionsTextSummarizer(model=args.model)
 
     summary = await Summarizer(text_summarizer=text_summarizer).summarize_async(
         args.input
